@@ -56,14 +56,14 @@ const VOICES = [
         </p>
   
         {/* ── 2x2 Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 border border-maroon/10 mb-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-maroon mb-0">
           {VOICES.map((v, i) => (
             <div
               key={v.name}
               className={`p-8 flex flex-col ${
-                i < 2 ? "border-b border-maroon/10" : ""
+                i < 2 ? "border-b border-maroon" : ""
               } ${
-                i % 2 === 0 ? "border-r border-maroon/10" : ""
+                i % 2 === 0 ? "border-r border-maroon" : ""
               }`}
             >
               {/* Quote mark */}
@@ -87,7 +87,7 @@ const VOICES = [
         </div>
   
         {/* ── Featured Wide Card ── */}
-        <div className="flex items-center gap-10 bg-cream border border-t border-maroon/10 p-8 mt-12  ">
+        <div className="flex items-center gap-10 bg-cream border border-t border-maroon p-8 mt-12  ">
   
           {/* Avatar */}
           <div className="w-14 h-14 rounded-full bg-maroon flex items-center justify-center shrink-0">
@@ -98,15 +98,15 @@ const VOICES = [
   
           {/* Content */}
           <div className="flex-1">
-            <p className="text-xs italic font-serif text-black/60 leading-relaxed mb-5">
+            <p className="text-xs italic font-serif text-black leading-relaxed mb-5">
               {FEATURED.quote}
             </p>
   
             {/* Gold line */}
-            <div className="w-8 h-[2px] bg-gold mb-4" />
+            <div className="w-8 h-1 bg-gold mb-4" />
   
-            <p className="text-xs font-bold text-maroon mb-1">{FEATURED.name}</p>
-            <p className="text-[10px] text-black/38">{FEATURED.title}</p>
+            <p className="text-sm font-bold text-maroon mb-1">{FEATURED.name}</p>
+            <p className="text-xs text-black">{FEATURED.title}</p>
           </div>
         </div>
   

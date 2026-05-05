@@ -24,10 +24,10 @@ export default function Footer() {
 
         {/* Brand */}
         <div>
-          <p className="text-[11px] font-bold tracking-[3.5px] uppercase text-white/80 mb-4">
+          <p className="text-lg font-bold tracking-[3.5px] uppercase text-white/80 mb-4">
             CXO Incubator
           </p>
-          <p className="text-[11.5px] text-white/30 leading-relaxed max-w-xs">
+          <p className="text-xs text-white/50 leading-relaxed max-w-xs">
             A leadership coaching program for senior executives and business
             owners ready to step fully into their C-suite potential. 18 batches.
             250+ leaders. 6 countries. 4 years of transformation.
@@ -36,7 +36,7 @@ export default function Footer() {
 
         {/* Navigate */}
         <div>
-          <p className="text-[9px] font-bold tracking-[3px] uppercase text-[#C49A3C]/70 mb-5">
+          <p className="text-xs font-bold tracking-[3px] uppercase text-gold mb-5">
             Navigate
           </p>
           <ul className="flex flex-col gap-3">
@@ -44,7 +44,7 @@ export default function Footer() {
               <li key={link.label}>
                 <Link
                   to={link.href}
-                  className="text-[12px] text-white/35 hover:text-white/70 transition-colors duration-200"
+                  className="text-xs text-white hover:text-white/70 transition-colors duration-200"
                 >
                   {link.label}
                 </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
 
         {/* Connect */}
         <div>
-          <p className="text-[9px] font-bold tracking-[3px] uppercase text-[#C49A3C]/70 mb-5">
+          <p className="text-xs font-bold tracking-[3px] uppercase text-gold mb-5">
             Connect
           </p>
           <ul className="flex flex-col gap-3">
@@ -63,7 +63,7 @@ export default function Footer() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="text-[12px] text-white/35 hover:text-white/70 transition-colors duration-200"
+                  className="text-xs text-white hover:text-white/70 transition-colors duration-200"
                 >
                   {link.label}
                 </a>
@@ -74,11 +74,11 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom Bar ── */}
-      <div className="border-t border-white/08 px-12 md:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-        <p className="text-[10px] text-white/20">
+      <div className="border-t border-white px-12 md:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p className="text-[10px] text-white/70">
           © 2025 CXO Incubator · Wevolve Labs · All rights reserved
         </p>
-        <p className="text-[10px] italic text-[#C49A3C]/35">
+        <p className="text-[10px] italic text-gold">
           "The leader you already are."
         </p>
       </div>
