@@ -1,0 +1,38 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Dark mode variant (optional) */
+@custom-variant dark (&:is(.dark *));
+
+/* ─── DESIGN TOKENS (Tailwind v4 way) ───────────────── */
+@theme {
+  /* Colors */
+  --color-maroon:        #6B1A1A;
+  --color-deep-maroon:   #4A1010;
+  --color-dark-maroon:   #3A0A0A;
+
+  --color-primary:       #6B1A1A; /* your main */
+  --color-gold:          #D4AF50;
+  --color-gold-light:    #EDD98A;
+  --color-gold-pale:     rgba(196,154,60,0.08);
+  --color-gold-dark:     #B8892E;
+
+  --color-offwhite:      #FAFAF8;
+  --color-cream:         #F8F4EE;
+
+  /* Fonts */
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-display: 'Bebas Neue', sans-serif;
+}
+
+/* ─── BASE RESET ───────────────── */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-offwhite);
+}
