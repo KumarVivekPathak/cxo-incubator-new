@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
 import NavBar from './components/NavBar';
+import ScorecardPage from './pages/scorecard/ScorecardPage';
+import Assessment from './pages/assessment/Assessment';
 
 
 export default function App() {
@@ -9,11 +11,8 @@ export default function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* <Route path="/scorecard" element={
-          <AssessmentProvider>
-            <ScorecardPage />
-          </AssessmentProvider>
-        } /> */}
+        <Route path='/scorecard' element={<ScorecardPage />} />
+        <Route path='/assessment' element={<Assessment />} />
       </Routes>
     </BrowserRouter>
   );
