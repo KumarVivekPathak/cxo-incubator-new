@@ -240,24 +240,24 @@ export default function Assessment() {
   const isLast = dimIndex === DIMENSIONS.length - 1 && qIndex === dim.questions.length - 1;
 
   return (
-    <div className="min-h-screen bg-[#F8F4EE]">
+    <div className="min-h-screen bg-cream">
 
       {/* ── Assessment Navbar ── */}
-      <div className="bg-white border-b border-[#6B1A1A]/08 sticky top-0 z-50">
+      <div className="bg-white border-b border-maroon/10 sticky top-0 z-50">
         {/* Progress bar */}
-        <div className="h-[3px] bg-[#6B1A1A]/08">
+        <div className="h-2 bg-maroon/20">
           <div
-            className="h-full bg-[#C49A3C] transition-all duration-500"
+            className="h-full bg-maroon transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         <div className="px-8 md:px-16">
           <div className="flex items-center justify-between h-14">
-            <p className="text-[9px] font-bold tracking-[2.5px] uppercase text-[#6B1A1A]/40">
+            <p className="text-xs font-semibold tracking-[2.5px] text-maroon">
               CXO Readiness Assessment
             </p>
-            <p className="text-[11px] font-bold text-[#6B1A1A]">
+            <p className="text-xs font-semibold tracking-[2.5px] text-maroon">
               Dimension {String(dimIndex + 1).padStart(2, "0")} of{" "}
               {String(DIMENSIONS.length).padStart(2, "0")}
             </p>
@@ -269,11 +269,11 @@ export default function Assessment() {
               <button
                 key={d.id}
                 onClick={() => { setDimIndex(i); setQIndex(0); }}
-                className={`px-5 py-3 text-[9.5px] font-bold tracking-[1.5px] uppercase border-b-2 transition-colors duration-200 whitespace-nowrap ${
+                className={`px-5 py-3 text-sm font-bold tracking-[1.5px] border-b-2 transition-colors duration-200 whitespace-nowrap ${
                   i === dimIndex
-                    ? "border-[#6B1A1A] text-[#6B1A1A]"
+                    ? "border-maroon text-maroon"
                     : i < dimIndex
-                    ? "border-[#C49A3C]/40 text-[#C49A3C]/60"
+                    ? "border-maroon text-maroon"
                     : "border-transparent text-black/30"
                 }`}
               >
@@ -288,8 +288,8 @@ export default function Assessment() {
       <div className="max-w-3xl mx-auto px-4 py-10">
 
         {/* Dimension header card */}
-        <div className="bg-[#6B1A1A] rounded-lg p-7 mb-6 flex gap-5 items-start">
-          <div className="w-14 h-14 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 text-2xl">
+        <div className="bg-maroon rounded-lg p-7 mb-6 flex gap-5 items-start">
+          <div className="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center text-2xl">
             {dim.icon}
           </div>
           <div>
@@ -300,19 +300,19 @@ export default function Assessment() {
             <h2 className="text-2xl font-bold text-white font-serif italic mb-2">
               {dim.title}
             </h2>
-            <p className="text-[12px] text-white/55 leading-relaxed max-w-xl">
+            <p className="text-xs text-white/70 leading-relaxed max-w-xl">
               {dim.description}
             </p>
           </div>
         </div>
 
         {/* Question card */}
-        <div className="bg-white border border-[#6B1A1A]/08 rounded-lg p-7 mb-4">
-          <p className="text-[9px] font-bold tracking-[2px] uppercase text-[#C49A3C] mb-4">
+        <div className="bg-white border border-maroon rounded-lg p-7 mb-4">
+          <p className="text-sm font-bold tracking-[2px] text-maroon mb-4">
             Question {qIndex + 1} of {dim.questions.length}
           </p>
 
-          <h3 className="text-[16px] font-semibold text-[#1A1A1A] leading-snug mb-6">
+          <h3 className="text-md font-semibold text-black leading-snug mb-6">
             {question.text}
           </h3>
 
@@ -324,23 +324,23 @@ export default function Assessment() {
                 onClick={() => handleSelect(i)}
                 className={`flex items-center gap-4 w-full text-left px-5 py-4 border rounded-sm transition-all duration-200 ${
                   selected === i
-                    ? "border-[#6B1A1A] bg-[#6B1A1A]/04"
-                    : "border-[#6B1A1A]/12 hover:border-[#6B1A1A]/30 hover:bg-[#F8F4EE]"
+                    ? "border-maroon bg-maroon/04"
+                    : "border-maroon/12 hover:border-maroon/30 hover:bg-cream"
                 }`}
               >
                 {/* Radio circle */}
-                <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors duration-200 ${
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-200 ${
                   selected === i
-                    ? "border-[#6B1A1A] bg-[#6B1A1A]"
-                    : "border-[#6B1A1A]/25"
+                    ? "border-maroon bg-maroon"
+                    : "border-maroon/25"
                 }`}>
                   {selected === i && (
                     <div className="w-2 h-2 rounded-full bg-white" />
                   )}
                 </div>
 
-                <span className={`text-[13px] leading-snug transition-colors duration-200 ${
-                  selected === i ? "text-[#6B1A1A] font-medium" : "text-black/60"
+                <span className={`text-sm leading-snug transition-colors duration-200 ${
+                  selected === i ? "text-maroon font-medium" : "text-black"
                 }`}>
                   {opt}
                 </span>
@@ -356,10 +356,10 @@ export default function Assessment() {
               key={i}
               className={`rounded-full transition-all duration-200 ${
                 i === qIndex
-                  ? "w-6 h-2 bg-[#6B1A1A]"
+                  ? "w-6 h-2 bg-maroon"
                   : answers[`${dimIndex}-${i}`] !== undefined
-                  ? "w-2 h-2 bg-[#C49A3C]"
-                  : "w-2 h-2 bg-[#6B1A1A]/15"
+                  ? "w-2 h-2 bg-gold"
+                  : "w-2 h-2 bg-maroon"
               }`}
             />
           ))}
@@ -370,19 +370,19 @@ export default function Assessment() {
           <button
             onClick={handleBack}
             disabled={dimIndex === 0 && qIndex === 0}
-            className="px-6 py-3 text-[10px] font-bold tracking-[2px] uppercase border border-[#6B1A1A]/20 text-[#6B1A1A]/50 hover:border-[#6B1A1A]/40 hover:text-[#6B1A1A] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+            className="px-6 py-3 text-sm font-bold tracking-[2px] border border-maroon text-maroon hover:border-maroon/40 hover:text-maroon/80 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
           >
             ← Back
           </button>
 
-          <p className="text-[10px] text-black/30">
+          <p className="text-xs text-black">
             {answeredSoFar + (selected !== undefined ? 1 : 0)} of {totalQuestions} answered
           </p>
 
           <button
             onClick={handleNext}
             disabled={selected === undefined}
-            className="relative overflow-hidden group px-8 py-3 text-[10px] font-bold tracking-[2px] uppercase bg-[#6B1A1A] text-white disabled:opacity-30 disabled:cursor-not-allowed transition-opacity duration-200"
+            className="relative overflow-hidden group px-8 py-3 text-sm font-bold tracking-[2px] bg-maroon text-white disabled:opacity-30 disabled:cursor-not-allowed transition-opacity duration-200"
           >
             <span className="relative z-10">
               {isLast ? "See My Results →" : "Next →"}
