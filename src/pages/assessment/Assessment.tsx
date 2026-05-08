@@ -224,7 +224,7 @@ export default function Assessment() {
       setDimIndex((d) => d + 1);
       setQIndex(0);
     } else {
-      navigate("/scorecard/results");
+      navigate("/results");
     }
   };
 

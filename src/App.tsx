@@ -9,12 +9,12 @@ import ResultPage from './pages/result/ResultPage';
 export default function App() {
   return (
     <BrowserRouter>
-      {/* <NavBar /> */}
+      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path='/scorecard' element={<ScorecardPage />} />
         <Route path='/assessment' element={<Assessment />} />
-        <Route path='/result' element={<ResultPage />} />
+        <Route path='/results' element={<ResultPage />} />
       </Routes>
     </BrowserRouter>
   );
