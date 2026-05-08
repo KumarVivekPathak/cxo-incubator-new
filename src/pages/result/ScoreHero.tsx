@@ -145,7 +145,7 @@ export default function ScoreHero({ data }: Props) {
             {/* Bar — animates from 0 → score */}
             <div className="h-3 bg-white/10 rounded-full mb-2 overflow-hidden">
               <div
-                className="h-full rounded-full transition-all duration-[1400ms] ease-out"
+                className="h-full rounded-full transition-all duration-1400 ease-out"
                 style={{
                   width: `${barWidth}%`,
                   background: "linear-gradient(90deg,#C0392B,#E67E22,#27AE60)",

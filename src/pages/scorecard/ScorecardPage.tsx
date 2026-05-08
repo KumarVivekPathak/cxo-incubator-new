@@ -1,4 +1,3 @@
-import React from "react";
 import ScorecardHero from "./ScorecardHero";
 import AssessmentForm from "./AssesmentForm";
 

@@ -36,7 +36,7 @@ export default function DimensionScores({ dimensions }: Props) {
         className={`flex items-center gap-3 mb-2 ${fadeUp(sectionInView)}`}
         style={{ animationDelay: sectionInView ? "100ms" : undefined }}
       >
-        <span className="text-[10px] sm:text-xs font-bold tracking-[2.5px] uppercase text-[#C49A3C] whitespace-nowrap">
+        <span className="text-[10px] sm:text-xs font-bold tracking-[2.5px] uppercase text-gold whitespace-nowrap">
           Your Full Assessment
         </span>
         <div className="flex-1 h-px bg-gold/30" />
