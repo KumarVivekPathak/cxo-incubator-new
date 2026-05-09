@@ -86,7 +86,7 @@ export default function AssessmentForm() {
     const snapshot = { ...form, [name]: value };
     const result = formSchema.safeParse(snapshot);
     if (result.success) return undefined;
-    return result.error.errors.find((e) => e.path[0] === name)?.message;
+    return result.error.issues.find((e) => e.path[0] === name)?.message;
   };
 
   // ─── Validate whole form ─────────────────────────────
@@ -97,7 +97,7 @@ export default function AssessmentForm() {
       return true;
     }
     const next: FormErrors = {};
-    result.error.errors.forEach((err) => {
+    result.error.issues.forEach((err) => {
       const field = err.path[0] as keyof FormData;
       if (!next[field]) {
         next[field] = err.message;
