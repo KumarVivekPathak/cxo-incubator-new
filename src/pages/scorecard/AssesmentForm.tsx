@@ -76,36 +76,35 @@ export default function AssessmentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // ─── Validate single field ─────────────────────────────
-  // Validate by snapshotting the whole form, then pulling out only this
-  // field's error. More reliable than schema.pick() across Zod versions.
-  const validateField = (
-    name: keyof FormData,
-    value: string
-  ): string | undefined => {
-    const snapshot = { ...form, [name]: value };
-    const result = formSchema.safeParse(snapshot);
-    if (result.success) return undefined;
-    return result.error.issues.find((e) => e.path[0] === name)?.message;
-  };
+// ─── Validate single field ─────────────────────────────
+const validateField = (
+  name: keyof FormData,
+  value: string
+): string | undefined => {
+  const snapshot = { ...form, [name]: value };
+  const result = formSchema.safeParse(snapshot);
+  if (result.success) return undefined;
+  return result.error.flatten().fieldErrors[name]?.[0];
+};
 
-  // ─── Validate whole form ─────────────────────────────
-  const validateAll = (data: FormData): boolean => {
-    const result = formSchema.safeParse(data);
-    if (result.success) {
-      setErrors({});
-      return true;
+// ─── Validate whole form ─────────────────────────────
+const validateAll = (data: FormData): boolean => {
+  const result = formSchema.safeParse(data);
+  if (result.success) {
+    setErrors({});
+    return true;
+  }
+  const fieldErrors = result.error.flatten().fieldErrors;
+  const next: FormErrors = {};
+  (Object.keys(fieldErrors) as Array<keyof FormData>).forEach((key) => {
+    const messages = fieldErrors[key];
+    if (messages && messages[0]) {
+      next[key] = messages[0];
     }
-    const next: FormErrors = {};
-    result.error.issues.forEach((err) => {
-      const field = err.path[0] as keyof FormData;
-      if (!next[field]) {
-        next[field] = err.message;
-      }
-    });
-    setErrors(next);
-    return false;
-  };
+  });
+  setErrors(next);
+  return false;
+};
 
   // ─── Handle input changes ─────────────────────────────
   const handleChange = (
