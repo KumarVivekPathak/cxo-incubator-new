@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Logo from "../assets/CXOLogo.png";
 
 const NAV_LINKS = [
   { label: "Transformations", href: "#stories" },
@@ -59,15 +60,7 @@ export default function Navbar() {
 
           {/* ── Logo ── */}
           <Link to="/" className="flex items-center gap-3 group shrink-0">
-            <div className="relative w-[38px] h-[38px] border border-maroon flex items-center justify-center">
-              <span className="text-[10px] font-bold tracking-[2px] text-maroon">CX</span>
-              <span className="absolute top-[-3px] right-[-3px] w-[9px] h-[9px] border-t-[2.5px] border-r-[2.5px] border-maroon" />
-            </div>
-
-            <div className="leading-none">
-              <p className="text-sm font-bold tracking-[3px] text-maroon leading-none">CXO</p>
-              <p className="text-xs tracking-[3px] text-maroon leading-none mt-[3px]">INCUBATOR</p>
-            </div>
+            <img src={Logo} alt="CXO Logo" className="h-20 w-auto" />
           </Link>
 
           {/* ── Desktop Nav Links: full set on home, "← Home" elsewhere ── */}
