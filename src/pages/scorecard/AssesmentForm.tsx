@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useInView } from "../../hooks/useInView";
+import { submitLead } from "../../utils/leads";
+import CustomInput from "../../components/CustomInput";
 
 const ROLE_LEVELS = [
   "Senior Manager / AGM",
@@ -54,7 +56,6 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
-const SheetAppURL ="https://script.google.com/macros/s/AKfycbxEXvINWO4c7YVhBRWskQJeIFONP9i5H-19jR8mm_VTMZdhDEgiBaEQfaBVt8gyQG0H/exec"
 export default function AssessmentForm() {
   const navigate = useNavigate();
   const [cardRef, cardInView] = useInView<HTMLDivElement>(0.1);
@@ -71,40 +72,42 @@ export default function AssessmentForm() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof FormData, boolean>>
+  >({});
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-// ─── Validate single field ─────────────────────────────
-const validateField = (
-  name: keyof FormData,
-  value: string
-): string | undefined => {
-  const snapshot = { ...form, [name]: value };
-  const result = formSchema.safeParse(snapshot);
-  if (result.success) return undefined;
-  return result.error.flatten().fieldErrors[name]?.[0];
-};
+  // ─── Validate single field ─────────────────────────────
+  const validateField = (
+    name: keyof FormData,
+    value: string
+  ): string | undefined => {
+    const snapshot = { ...form, [name]: value };
+    const result = formSchema.safeParse(snapshot);
+    if (result.success) return undefined;
+    return result.error.flatten().fieldErrors[name]?.[0];
+  };
 
-// ─── Validate whole form ─────────────────────────────
-const validateAll = (data: FormData): boolean => {
-  const result = formSchema.safeParse(data);
-  if (result.success) {
-    setErrors({});
-    return true;
-  }
-  const fieldErrors = result.error.flatten().fieldErrors;
-  const next: FormErrors = {};
-  (Object.keys(fieldErrors) as Array<keyof FormData>).forEach((key) => {
-    const messages = fieldErrors[key];
-    if (messages && messages[0]) {
-      next[key] = messages[0];
+  // ─── Validate whole form ─────────────────────────────
+  const validateAll = (data: FormData): boolean => {
+    const result = formSchema.safeParse(data);
+    if (result.success) {
+      setErrors({});
+      return true;
     }
-  });
-  setErrors(next);
-  return false;
-};
+    const fieldErrors = result.error.flatten().fieldErrors;
+    const next: FormErrors = {};
+    (Object.keys(fieldErrors) as Array<keyof FormData>).forEach((key) => {
+      const messages = fieldErrors[key];
+      if (messages && messages[0]) {
+        next[key] = messages[0];
+      }
+    });
+    setErrors(next);
+    return false;
+  };
 
   // ─── Handle input changes ─────────────────────────────
   const handleChange = (
@@ -147,38 +150,101 @@ const validateAll = (data: FormData): boolean => {
   };
 
   // ─── Submit ─────────────────────────────
+  // const handleSubmit = async () => {
+  //   setSubmitError(null);
+
+  //   // Mark all fields as touched so errors render
+  //   const allTouched = Object.keys(form).reduce(
+  //     (acc, key) => ({ ...acc, [key]: true }),
+  //     {} as Record<string, boolean>
+  //   );
+  //   setTouched(allTouched);
+
+  //   if (!validateAll(form)) return;
+
+  //   if (!SheetAppURL) {
+  //     setSubmitError("Submission endpoint is not configured.");
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   try {
+  //     // no-cors: response is opaque, but the request lands.
+  //     // If fetch throws, we treat it as a network failure.
+  //     await fetch(SheetAppURL, {
+  //       method: "POST",
+  //       mode: "no-cors",
+  //       body: JSON.stringify(form),
+  //     });
+
+  //     localStorage.setItem("cxo_user", JSON.stringify(form));
+  //     navigate("/assessment");
+  //   } catch (err) {
+  //     setSubmitError(
+  //       "Could not reach the server. Please check your connection and try again."
+  //     );
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  // const handleSubmit = async () => {
+  //   setSubmitError(null);
+
+  //   // Mark all fields as touched so errors render
+  //   const allTouched = Object.keys(form).reduce(
+  //     (acc, key) => ({ ...acc, [key]: true }),
+  //     {} as Record<string, boolean>
+  //   );
+  //   setTouched(allTouched);
+
+  //   if (!validateAll(form)) return;
+  //   setIsSubmitting(true);
+  //   const result = await submitLead(form);
+  //   console.log("lead catched :: ");
+
+  //   if (result.success) {
+  //     // Save lead info + ID so the assessment page can update the same row
+  //     localStorage.setItem("cxo_user", JSON.stringify(form));
+  //     localStorage.setItem("cxo_lead_id", result.id);
+  //     navigate("/assessment");
+  //   } else {
+  //     setSubmitError(result.error);
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     setSubmitError(null);
-
-    // Mark all fields as touched so errors render
+  
     const allTouched = Object.keys(form).reduce(
       (acc, key) => ({ ...acc, [key]: true }),
       {} as Record<string, boolean>
     );
+  
     setTouched(allTouched);
-
+  
     if (!validateAll(form)) return;
-
-    if (!SheetAppURL) {
-      setSubmitError("Submission endpoint is not configured.");
-      return;
-    }
-
+  
     setIsSubmitting(true);
+  
     try {
-      // no-cors: response is opaque, but the request lands.
-      // If fetch throws, we treat it as a network failure.
-      await fetch(SheetAppURL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(form),
-      });
-
+      const result = await submitLead(form);
+      console.log("leads submitted :: ", result);
+      if (!result.success) {
+        setSubmitError(result.error || "Something went wrong");
+        return;
+      }
+  
       localStorage.setItem("cxo_user", JSON.stringify(form));
+      localStorage.setItem("cxo_lead_id", result.id.toString() || "");
+  
       navigate("/assessment");
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
+  
       setSubmitError(
-        "Could not reach the server. Please check your connection and try again."
+        "Something went wrong. Please try again later."
       );
     } finally {
       setIsSubmitting(false);
@@ -326,76 +392,37 @@ const validateAll = (data: FormData): boolean => {
           </p>
 
           {/* Form grid */}
+          {/* Form grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-            {FIELDS.map((field, i) => {
-              const showError = errors[field.name] && touched[field.name];
-
-              return (
-                <div
-                  key={field.name}
-                  className={fadeUp(cardInView)}
-                  style={{
-                    animationDelay: cardInView ? `${450 + i * 70}ms` : undefined,
-                  }}
-                >
-                  <label className={labelClass}>
-                    {field.label}
-                    {field.required && (
-                      <span className="text-red-500"> *</span>
-                    )}
-                  </label>
-
-                  {field.type === "input" ? (
-                    <input
-                      name={field.name}
-                      type={field.inputType}
-                      placeholder={field.placeholder}
-                      value={form[field.name]}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={inputClass(field.name)}
-                      aria-invalid={!!showError}
-                      aria-describedby={
-                        showError ? `${field.name}-error` : undefined
+            {FIELDS.map((field, i) => (
+              <div
+                key={field.name}
+                className={fadeUp(cardInView)}
+                style={{
+                  animationDelay: cardInView ? `${450 + i * 70}ms` : undefined,
+                }}
+              >
+                <CustomInput
+                  name={field.name}
+                  label={field.label}
+                  required={field.required}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors[field.name]}
+                  touched={touched[field.name]}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  {...(field.type === "input"
+                    ? {
+                        inputType: field.inputType,
                       }
-                    />
-                  ) : (
-                    <select
-                      name={field.name}
-                      value={form[field.name]}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={inputClass(field.name)}
-                      aria-invalid={!!showError}
-                      aria-describedby={
-                        showError ? `${field.name}-error` : undefined
-                      }
-                    >
-                      <option value="" disabled>
-                        {field.placeholder}
-                      </option>
-                      {field.options.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-
-                  {/* Error message slot — fixed height prevents layout shift */}
-                  <div className="min-h-[20px] mt-1">
-                    {showError && (
-                      <p
-                        id={`${field.name}-error`}
-                        className="text-xs text-red-500"
-                      >
-                        {errors[field.name]}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+                    : {
+                        options: field.options,
+                      })}
+                />
+              </div>
+            ))}
           </div>
 
           {/* Server / network error */}
@@ -431,10 +458,7 @@ const validateAll = (data: FormData): boolean => {
               "⏱ Takes 8 Minutes",
               "✦ No Generic Advice",
             ].map((t) => (
-              <span
-                key={t}
-                className="text-[11px] sm:text-xs text-black/80"
-              >
+              <span key={t} className="text-[11px] sm:text-xs text-black/80">
                 {t}
               </span>
             ))}
