@@ -1,6 +1,5 @@
 import { supabase } from "./supabase";
 
-// ─── Types ─────────────────────────────
 export type LeadPayload = {
   firstName: string;
   lastName: string;
