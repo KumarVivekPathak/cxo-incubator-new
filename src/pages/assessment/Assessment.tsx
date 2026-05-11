@@ -1,230 +1,124 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-const DIMENSIONS = [
-  {
-    id: "purpose", label: "Purpose", icon: "🧭",
-    title: "Purpose Clarity",
-    description: 'Your "why" is the compass that guides every great C-suite decision. This dimension reveals whether you lead from external validation — or from a deep, unshakeable internal purpose.',
-    questions: [
-      {
-        text: "The last time you made a significant career move, what drove it most?",
-        options: [
-          "A deliberate step toward a bigger leadership mission I had already defined for myself",
-          "A larger role with more scope and visibility",
-          "A better salary or title — the opportunity was too good to pass up",
-          "Escaping a difficult situation — boss, culture, or stagnation",
-        ],
-      },
-      {
-        text: "When you imagine yourself at your leadership peak, what does success look like?",
-        options: [
-          "A clearly articulated impact I've made on people, systems, or society",
-          "A prestigious title and a seat at the most influential tables",
-          "Financial freedom and the recognition of my peers",
-          "I haven't thought that far ahead — I focus on what's in front of me",
-        ],
-      },
-      {
-        text: "How often do you consciously connect your daily decisions to a long-term leadership purpose?",
-        options: [
-          "Almost always — my purpose is my filter for every major decision",
-          "Sometimes — when I step back and reflect",
-          "Rarely — I'm mostly responding to what the role demands",
-          "Never — purpose feels abstract compared to execution",
-        ],
-      },
-    ],
-  },
-  {
-    id: "leadership", label: "Leadership", icon: "👑",
-    title: "Leadership Mindset",
-    description: "The gap between a senior manager and a C-suite leader is rarely technical. This dimension assesses whether your mindset has made the shift.",
-    questions: [
-      {
-        text: "When a team member underperforms, your first instinct is to:",
-        options: [
-          "Have an honest, direct conversation about impact and expectations",
-          "Give them more time and check in more frequently",
-          "Reassign the work to someone more reliable",
-          "Escalate to HR or my manager",
-        ],
-      },
-      {
-        text: "How do you typically respond when your idea is rejected by leadership?",
-        options: [
-          "Seek to understand the reasoning and refine my thinking",
-          "Accept it and move on, but internally question the decision",
-          "Feel frustrated but keep it to myself",
-          "Lose confidence in my ability to influence at this level",
-        ],
-      },
-      {
-        text: "How comfortable are you making high-stakes decisions with incomplete information?",
-        options: [
-          "Very comfortable — I use frameworks and instinct to move forward",
-          "Moderately comfortable — I gather as much data as possible first",
-          "Uncomfortable — I prefer consensus before deciding",
-          "Very uncomfortable — uncertainty makes me delay",
-        ],
-      },
-    ],
-  },
-  {
-    id: "presence", label: "Presence", icon: "⚡",
-    title: "Executive Presence",
-    description: "Presence isn't performance. It's the quality of attention you command and the trust you generate before you say a word.",
-    questions: [
-      {
-        text: "When you walk into a room of senior leaders, how do you typically feel?",
-        options: [
-          "Confident and ready — I belong here and have something to contribute",
-          "Prepared but slightly aware of the hierarchy",
-          "Cautious — I wait to read the room before contributing",
-          "Anxious — I worry about being judged or dismissed",
-        ],
-      },
-      {
-        text: "How do peers and seniors typically describe your communication style?",
-        options: [
-          "Clear, direct, and influential — I move rooms",
-          "Thorough and credible — people trust my analysis",
-          "Collaborative and careful — I rarely ruffle feathers",
-          "Reserved — I contribute when asked",
-        ],
-      },
-    ],
-  },
-  {
-    id: "resilience", label: "Resilience", icon: "🛡",
-    title: "Emotional Resilience",
-    description: "The higher you go, the more you absorb. This dimension reveals your capacity to lead under sustained pressure without losing clarity or compassion.",
-    questions: [
-      {
-        text: "During a prolonged period of high pressure, how do you typically show up?",
-        options: [
-          "I remain largely steady — stress sharpens my focus",
-          "I manage well but notice some irritability or withdrawal",
-          "My performance dips and I need time to recover",
-          "I struggle significantly and it affects my team",
-        ],
-      },
-      {
-        text: "When you receive critical feedback about your leadership, your first response is:",
-        options: [
-          "Curiosity — I want to understand and grow",
-          "Defensiveness that I quickly regulate",
-          "Self-doubt that takes a few days to shake",
-          "Avoidance — I find critical feedback very difficult",
-        ],
-      },
-    ],
-  },
-  {
-    id: "agility", label: "Agility", icon: "🔄",
-    title: "Learning Agility",
-    description: "The C-suite demands perpetual reinvention. This dimension measures how quickly and comfortably you learn, unlearn, and adapt.",
-    questions: [
-      {
-        text: "When entering a domain where you have limited expertise, you tend to:",
-        options: [
-          "Dive in with curiosity and actively seek mentors and frameworks",
-          "Proceed carefully and rely on trusted team members",
-          "Stick to what I know and delegate the unfamiliar",
-          "Feel exposed and avoid situations where I might be wrong",
-        ],
-      },
-      {
-        text: "How often do you deliberately seek out perspectives that challenge your worldview?",
-        options: [
-          "Regularly — it's how I stay sharp",
-          "Occasionally — when something forces me to",
-          "Rarely — I prefer views that align with my experience",
-          "Almost never — I trust my own judgment",
-        ],
-      },
-    ],
-  },
-  {
-    id: "ecosystem", label: "Ecosystem", icon: "🌐",
-    title: "Ecosystem Intelligence",
-    description: "C-suite leaders don't just manage organisations. They navigate ecosystems — boards, industries, governments, and communities of influence.",
-    questions: [
-      {
-        text: "How deliberately do you invest in relationships outside your immediate organisation?",
-        options: [
-          "Very deliberately — I maintain a diverse network across sectors and geographies",
-          "Moderately — I attend industry events and stay loosely connected",
-          "Minimally — I focus on internal relationships",
-          "Not at all — networking feels inauthentic to me",
-        ],
-      },
-      {
-        text: "How aware are you of the industry trends that will affect your organisation in 3–5 years?",
-        options: [
-          "Very aware — I actively study and discuss macro forces",
-          "Somewhat aware — I follow the headlines",
-          "Vaguely aware — I trust others to track this",
-          "Not aware — I focus on what's in front of me",
-        ],
-      },
-    ],
-  },
-  {
-    id: "decisions", label: "Decisions", icon: "⚖",
-    title: "Strategic Decisions",
-    description: "At the C-suite, every decision carries consequences that ripple across the organisation. This dimension measures the quality and confidence of your strategic thinking.",
-    questions: [
-      {
-        text: "When making a major strategic decision, how do you typically approach trade-offs?",
-        options: [
-          "I map the trade-offs explicitly and decide based on long-term organisational value",
-          "I consult widely and synthesise diverse inputs before deciding",
-          "I default to the option that minimises short-term risk",
-          "I find trade-off situations very difficult and tend to delay",
-        ],
-      },
-      {
-        text: "How comfortable are you disagreeing with the prevailing view in a senior leadership meeting?",
-        options: [
-          "Very comfortable — I see it as my responsibility",
-          "Comfortable when I have strong data to support my position",
-          "Uncomfortable — I choose my battles carefully",
-          "Very uncomfortable — I rarely voice dissent",
-        ],
-      },
-    ],
-  },
-];
+import {
+  fetchAssessment,
+  submitAssessment,
+  type Dimension,
+} from "../../utils/assessments";
 
 export default function Assessment() {
   const navigate = useNavigate();
+
+  const [dimensions, setDimensions] = useState<Dimension[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const [dimIndex, setDimIndex] = useState(0);
   const [qIndex, setQIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
 
-  const dim = DIMENSIONS[dimIndex];
+  // answers keyed by question_id for cleaner lookup
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+
+  // ─── Load assessment data on mount ──────────────
+  useEffect(() => {
+    fetchAssessment()
+      .then((data) => {
+        if (data.length === 0) {
+          setLoadError("Assessment is not configured yet.");
+        } else {
+          setDimensions(data);
+        }
+      })
+      .catch((err) => setLoadError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ─── Loading / error states ─────────────────────
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <p className="text-sm tracking-[2px] text-maroon">Loading assessment...</p>
+      </div>
+    );
+  }
+
+  if (loadError || dimensions.length === 0) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+        <p className="text-sm text-red-600">
+          {loadError || "Could not load assessment."}
+        </p>
+      </div>
+    );
+  }
+
+  const dim = dimensions[dimIndex];
   const question = dim.questions[qIndex];
-  const answerKey = `${dimIndex}-${qIndex}`;
-  const selected = answers[answerKey];
+  const selectedOptionId = answers[question.id];
 
-  const totalQuestions = DIMENSIONS.reduce((s, d) => s + d.questions.length, 0);
-  const answeredSoFar = DIMENSIONS.slice(0, dimIndex).reduce((s, d) => s + d.questions.length, 0) + qIndex;
+  const totalQuestions = dimensions.reduce((s, d) => s + d.questions.length, 0);
+  const answeredSoFar =
+    dimensions.slice(0, dimIndex).reduce((s, d) => s + d.questions.length, 0) + qIndex;
   const progress = Math.round((answeredSoFar / totalQuestions) * 100);
 
-  const handleSelect = (i: number) => {
-    setAnswers((p) => ({ ...p, [answerKey]: i }));
+  const handleSelect = (optionId: number) => {
+    setAnswers((prev) => ({ ...prev, [question.id]: optionId }));
   };
 
-  const handleNext = () => {
-    if (selected === undefined) return;
+  const isLast =
+    dimIndex === dimensions.length - 1 && qIndex === dim.questions.length - 1;
+
+  const handleNext = async () => {
+    if (selectedOptionId === undefined) return;
+
     if (qIndex < dim.questions.length - 1) {
       setQIndex((q) => q + 1);
-    } else if (dimIndex < DIMENSIONS.length - 1) {
+      return;
+    }
+
+    if (dimIndex < dimensions.length - 1) {
       setDimIndex((d) => d + 1);
       setQIndex(0);
-    } else {
+      return;
+    }
+
+    // Last question — submit
+    await handleFinalSubmit();
+  };
+
+  const handleFinalSubmit = async () => {
+    setSubmitError(null);
+    setSubmitting(true);
+
+    const leadIdStr = localStorage.getItem("cxo_lead_id");
+    if (!leadIdStr) {
+      setSubmitError("Lead session expired. Please start over.");
+      setSubmitting(false);
+      navigate("/scorecard");
+      return;
+    }
+
+    const leadId = parseInt(leadIdStr, 10);
+    if (isNaN(leadId)) {
+      setSubmitError("Invalid session. Please start over.");
+      setSubmitting(false);
+      return;
+    }
+
+    const answerArray = Object.entries(answers).map(([qid, oid]) => ({
+      question_id: parseInt(qid, 10),
+      option_id: oid,
+    }));
+
+    const result = await submitAssessment(leadId, answerArray, dimensions);
+
+    if (result.success) {
       navigate("/results");
+    } else {
+      setSubmitError(result.error);
+      setSubmitting(false);
     }
   };
 
@@ -232,19 +126,17 @@ export default function Assessment() {
     if (qIndex > 0) {
       setQIndex((q) => q - 1);
     } else if (dimIndex > 0) {
+      const prevDim = dimensions[dimIndex - 1];
       setDimIndex((d) => d - 1);
-      setQIndex(DIMENSIONS[dimIndex - 1].questions.length - 1);
+      setQIndex(prevDim.questions.length - 1);
     }
   };
-
-  const isLast = dimIndex === DIMENSIONS.length - 1 && qIndex === dim.questions.length - 1;
 
   return (
     <div className="min-h-screen bg-cream">
 
       {/* ── Assessment Navbar ── */}
       <div className="bg-white border-b border-maroon/10 sticky top-0 z-50">
-        {/* Progress bar */}
         <div className="h-2 bg-maroon/20">
           <div
             className="h-full bg-maroon transition-all duration-500"
@@ -259,13 +151,12 @@ export default function Assessment() {
             </p>
             <p className="text-xs font-semibold tracking-[2.5px] text-maroon">
               Dimension {String(dimIndex + 1).padStart(2, "0")} of{" "}
-              {String(DIMENSIONS.length).padStart(2, "0")}
+              {String(dimensions.length).padStart(2, "0")}
             </p>
           </div>
 
-          {/* Dimension tabs */}
           <div className="flex items-center gap-0 overflow-x-auto pb-0">
-            {DIMENSIONS.map((d, i) => (
+            {dimensions.map((d, i) => (
               <button
                 key={d.id}
                 onClick={() => { setDimIndex(i); setQIndex(0); }}
@@ -287,15 +178,14 @@ export default function Assessment() {
       {/* ── Content ── */}
       <div className="max-w-3xl mx-auto px-4 py-10">
 
-        {/* Dimension header card */}
+        {/* Dimension header */}
         <div className="bg-maroon rounded-lg p-7 mb-6 flex gap-5 items-start">
           <div className="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center text-2xl">
             {dim.icon}
           </div>
           <div>
             <p className="text-[8.5px] font-bold tracking-[2.5px] uppercase text-[#C49A3C]/80 mb-2">
-              Dimension {String(dimIndex + 1).padStart(2, "0")} of{" "}
-              {DIMENSIONS.length}
+              Dimension {String(dimIndex + 1).padStart(2, "0")} of {dimensions.length}
             </p>
             <h2 className="text-2xl font-bold text-white font-serif italic mb-2">
               {dim.title}
@@ -316,33 +206,31 @@ export default function Assessment() {
             {question.text}
           </h3>
 
-          {/* Options */}
           <div className="flex flex-col gap-3">
-            {question.options.map((opt, i) => (
+            {question.options.map((opt) => (
               <button
-                key={i}
-                onClick={() => handleSelect(i)}
+                key={opt.id}
+                onClick={() => handleSelect(opt.id)}
                 className={`flex items-center gap-4 w-full text-left px-5 py-4 border rounded-sm transition-all duration-200 ${
-                  selected === i
+                  selectedOptionId === opt.id
                     ? "border-maroon bg-maroon/04"
                     : "border-maroon/12 hover:border-maroon/30 hover:bg-cream"
                 }`}
               >
-                {/* Radio circle */}
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-200 ${
-                  selected === i
+                  selectedOptionId === opt.id
                     ? "border-maroon bg-maroon"
                     : "border-maroon/25"
                 }`}>
-                  {selected === i && (
+                  {selectedOptionId === opt.id && (
                     <div className="w-2 h-2 rounded-full bg-white" />
                   )}
                 </div>
 
                 <span className={`text-sm leading-snug transition-colors duration-200 ${
-                  selected === i ? "text-maroon font-medium" : "text-black"
+                  selectedOptionId === opt.id ? "text-maroon font-medium" : "text-black"
                 }`}>
-                  {opt}
+                  {opt.text}
                 </span>
               </button>
             ))}
@@ -351,19 +239,26 @@ export default function Assessment() {
 
         {/* Question dots */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          {dim.questions.map((_, i) => (
+          {dim.questions.map((q, i) => (
             <div
-              key={i}
+              key={q.id}
               className={`rounded-full transition-all duration-200 ${
                 i === qIndex
                   ? "w-6 h-2 bg-maroon"
-                  : answers[`${dimIndex}-${i}`] !== undefined
+                  : answers[q.id] !== undefined
                   ? "w-2 h-2 bg-gold"
                   : "w-2 h-2 bg-maroon"
               }`}
             />
           ))}
         </div>
+
+        {/* Submit error */}
+        {submitError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-sm">
+            <p className="text-xs text-red-600">{submitError}</p>
+          </div>
+        )}
 
         {/* Navigation */}
         <div className="flex items-center justify-between">
@@ -376,16 +271,20 @@ export default function Assessment() {
           </button>
 
           <p className="text-xs text-black">
-            {answeredSoFar + (selected !== undefined ? 1 : 0)} of {totalQuestions} answered
+            {Object.keys(answers).length} of {totalQuestions} answered
           </p>
 
           <button
             onClick={handleNext}
-            disabled={selected === undefined}
+            disabled={selectedOptionId === undefined || submitting}
             className="relative overflow-hidden group px-8 py-3 text-sm font-bold tracking-[2px] bg-maroon text-white disabled:opacity-30 disabled:cursor-not-allowed transition-opacity duration-200"
           >
             <span className="relative z-10">
-              {isLast ? "See My Results →" : "Next →"}
+              {submitting
+                ? "Submitting..."
+                : isLast
+                ? "See My Results →"
+                : "Next →"}
             </span>
             <span className="absolute inset-0 bg-deep-maroon translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </button>
