@@ -1,4 +1,5 @@
 import { useInView } from "../../hooks/useInView";
+import RadhikaImage from "../../assets/RadhikaCXO.jpeg";
 
 const TAGS = [
   "Executive Coaching",
@@ -57,7 +58,7 @@ export default function AboutAndProcess() {
                         ${aboutInView ? "animate-fade-in-scale" : "opacity-0"}`}
             style={{ animationDelay: aboutInView ? "100ms" : undefined }}
           >
-            <span className="text-white/20 text-sm tracking-widest">Photo</span>
+            <img src={RadhikaImage} alt="Radhika Balakrishnan" />
           </div>
 
           {/* Content */}

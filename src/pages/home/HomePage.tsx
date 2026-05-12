@@ -6,6 +6,9 @@ import AboutAndProcess from "./About";
 import CTASection from "./CTASection";
 import Footer from "../../components/Footer";
 import { useLocation } from "react-router-dom";
+import ClientVideoSection from "./ClientVideoSection";
+import RadhikaVideo from "../../assets/radhika-cxo-story.mp4";
+import RadhikaImage from "../../assets/radhika.jpeg";
 
 const HomePage: React.FC = () => {
   const { hash } = useLocation();
@@ -14,7 +17,9 @@ const HomePage: React.FC = () => {
     if (!hash) return;
     // small delay so sections are mounted
     const t = setTimeout(() => {
-      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document
+        .querySelector(hash)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 50);
     return () => clearTimeout(t);
   }, [hash]);
@@ -22,10 +27,24 @@ const HomePage: React.FC = () => {
   return (
     <main>
       <ScorecardItems />
-      <section id="stories" className="scroll-mt-[80px]"><Transformations /></section>
-      <section id="retreats" className="scroll-mt-[80px]"><CTASection /></section>
-      <section id="endorsements" className="scroll-mt-[80px]"><Voices /></section>
-      <section id="about" className="scroll-mt-[80px]"><AboutAndProcess /></section>
+      <section id="stories" className="scroll-mt-[80px]">
+        <Transformations />
+      </section>
+      <section id="retreats" className="scroll-mt-[80px]">
+        <CTASection />
+      </section>
+      <section id="endorsements" className="scroll-mt-[80px]">
+        <Voices />
+      </section>
+      <section id="client-video" className="scroll-mt-[80px]">
+        <ClientVideoSection
+          src={RadhikaVideo}
+          poster={RadhikaImage}
+        />
+      </section>
+      <section id="about" className="scroll-mt-[80px]">
+        <AboutAndProcess />
+      </section>
       <Footer />
     </main>
   );
