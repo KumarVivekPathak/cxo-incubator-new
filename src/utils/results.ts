@@ -1,3 +1,4 @@
+import { sendEmail } from "./email";
 import { supabase } from "./supabase";
 
 // Match the existing ResultsData shape your UI expects
@@ -155,6 +156,19 @@ export async function fetchResults(leadId: number): Promise<ResultsData> {
     .select("journey_level, message")
     .eq("band_slug", lead.band)
     .single();
+
+  sendEmail(
+    lead.email,
+    "Get you CXO Scorecard",
+    `
+    <>
+    <h1>Your Cxo scor is : ${lead.overall_pct}</h1>
+    <p>Based on your responses, there are focused areas where deliberate work will create the biggest leadership shift.</p>
+    <p>Click the link below to get your scorecard.</p>
+    <p><a href='https://cxoincubator.com'>Get your scorecard</a></p>
+    </>
+    `
+  );
 
   return {
     userName: lead.first_name,
