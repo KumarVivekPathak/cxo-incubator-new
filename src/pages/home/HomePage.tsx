@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import ClientVideoSection from "./ClientVideoSection";
 import RadhikaVideo from "../../assets/radhika-cxo-story.mp4";
 import RadhikaImage from "../../assets/radhika.jpeg";
+import HowWeWork from "./HowWeWork";
 
 const HomePage: React.FC = () => {
   const { hash } = useLocation();
@@ -41,6 +42,9 @@ const HomePage: React.FC = () => {
           src={RadhikaVideo}
           poster={RadhikaImage}
         />
+      </section>
+      <section>
+        <HowWeWork />
       </section>
       <section id="about" className="scroll-mt-[80px]">
         <AboutAndProcess />

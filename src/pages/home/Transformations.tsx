@@ -53,7 +53,7 @@ export default function Transformations() {
         </h2>
 
         <p className="text-sm text-black/55 leading-relaxed max-w-lg mb-10 sm:mb-12">
-          These are not before-and-after slides. These are real professionals
+          These are no before-and-after slides. These are real professionals
           who stopped waiting for someone else to notice them — and started
           building their path with intention.
         </p>

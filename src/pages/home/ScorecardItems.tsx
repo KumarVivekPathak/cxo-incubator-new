@@ -38,7 +38,7 @@ export default function ScorecardItems() {
           <div className="w-full max-w-lg">
             {/* Badge */}
             <p
-              className={`text-xs sm:text-sm font-bold tracking-tight uppercase text-gold/80 mb-6 sm:mb-8 ${fadeUp(heroInView)}`}
+              className={`text-sm sm:text-md font-bold tracking-tight uppercase text-gold-dark mb-6 sm:mb-8 ${fadeUp(heroInView)}`}
               style={{ animationDelay: heroInView ? "100ms" : undefined }}
             >
               18 Batches · 6 Countries · 4 Years
@@ -49,11 +49,12 @@ export default function ScorecardItems() {
               className={`text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.15] mb-5 sm:mb-6 ${fadeUp(heroInView)}`}
               style={{ animationDelay: heroInView ? "220ms" : undefined }}
             >
-              Become the Leader <br className="hidden lg:block" />
-              You <span className="text-gold">Already Are</span>
+              Your promotion to  
+
+               <br className="hidden lg:block" />
+               a <span className="text-gold">leadership role</span>
               <br />
-              But Haven't <br className="hidden lg:block" />
-              Stepped Into Yet.
+              is closer than you think. 
             </h1>
 
             {/* Body */}
@@ -61,9 +62,9 @@ export default function ScorecardItems() {
               className={`text-white/80 text-sm leading-relaxed mb-8 sm:mb-10 ${fadeUp(heroInView)}`}
               style={{ animationDelay: heroInView ? "380ms" : undefined }}
             >
-              Most senior professionals are one or two coachable gaps away from
-              the C-suite. The CXO Incubator has helped 250+ leaders across 6
-              countries find — and close — exactly those gaps.
+              Many senior professionals feel stuck in their career without access to strategic mentorship and nuanced coaching, hindering their advancement. Their technical mastery is no longer enough to reach the next level, and the strategic roadmap to the C-suite remains invisible. 
+              <br/>
+              This is where CXO Incubator comes in to be your executive leadership partner. We have helped 250+ global leaders identify and bridge the gap between where they are and where they aspire to be. 
             </p>
 
             {/* Buttons */}

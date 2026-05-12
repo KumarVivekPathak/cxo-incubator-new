@@ -55,7 +55,7 @@ export default function CTASection() {
         className={`text-[13px] sm:text-sm text-offwhite leading-relaxed max-w-md mb-8 sm:mb-10 ${fadeUp(sectionInView)}`}
         style={{ animationDelay: sectionInView ? "440ms" : undefined }}
       >
-        Most senior professionals are one or two coachable gaps away from the
+        Most senior professionals are one or two coachable steps away from the
         C-suite — and have no idea which ones. This scorecard shows you exactly
         where you stand across 7 dimensions of executive leadership.
       </p>

@@ -69,7 +69,7 @@ export default function ScorecardHero() {
           style={{ animationDelay: sectionInView ? "520ms" : undefined }}
         >
           Most senior professionals are closer to the C-suite than they realise —
-          and held back by two or three specific, coachable gaps. This assessment
+          and held back by two or three specific, coachable steps. This assessment
           reveals exactly which ones.
         </p>
 
